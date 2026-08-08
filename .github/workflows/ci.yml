@@ -40,7 +40,20 @@ jobs:
         run: docker compose up -d postgres
 
       - name: Wait for PostgreSQL
-        run: docker compose wait postgres
+        run: |
+          for i in {1..30}; do
+            if docker compose exec -T postgres pg_isready -U postgres -d sqlprofiler; then
+              echo "PostgreSQL is ready"
+              exit 0
+            fi
+
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
+          echo "PostgreSQL did not become ready"
+          docker compose logs postgres
+          exit 1
 
       - name: Show database container status
         run: docker compose ps
