@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyze Query - SQL Query Profiler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <h1><a href="index.html">🔍 SQL Query Profiler</a></h1>
+    </nav>
+
+    <div class="container">
+        <h2>Analyze Your Query</h2>
+        <p>Paste your SQL query below and click Analyze.</p>
+
+        <textarea id="queryInput" placeholder="SELECT * FROM orders WHERE status = 'pending'"></textarea>
+
+        <button class="btn" onclick="analyzeQuery()">Analyze Query</button>
+
+        <div id="loading" style="display:none;">
+            <p>Analyzing your query...</p>
+        </div>
+
+        <div id="report" style="display:none;">
+
+            <div id="severityBanner"></div>
+
+            <div class="report-section">
+                <h3>Execution Time</h3>
+                <p id="execTime"></p>
+            </div>
+
+            <div class="report-section">
+                <h3>Rows Scanned</h3>
+                <p id="rowsScanned"></p>
+            </div>
+
+            <div class="report-section">
+                <h3>Why Is It Slow?</h3>
+                <p id="problem"></p>
+            </div>
+
+            <div class="report-section">
+                <h3>The Fix</h3>
+                <p id="fix"></p>
+                <div id="fixSQLBox" class="code-box"></div>
+            </div>
+
+            <button class="btn btn-green" onclick="copyFix()">Copy Fix SQL</button>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
