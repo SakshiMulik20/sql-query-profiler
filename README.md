@@ -1,4 +1,4 @@
-# SQL Query Profiler
+# 🔍 SQL Query Profiler
 
 SQL Query Profiler is a Spring Boot application that analyzes PostgreSQL queries, detects common performance problems, explains the evidence, and suggests possible fixes.
 
@@ -6,39 +6,39 @@ It also stores query-analysis history and compares performance before and after 
 
 ---
 
-## Current Status
+## 🚀 Current Status
 
 **Stage 1A is complete.**
 
-### Implemented
+### ✅ Implemented
 
-- Manual SQL analysis
-- Safe `EXPLAIN ANALYZE` collection
-- 15 SQL performance detection rules
-- Severity and confidence for findings
-- Query history
-- SQL query normalization
-- Suggested SQL fixes
-- Before-and-after performance comparison
-- Docker Compose PostgreSQL demo database
-- Automated tests
-- GitHub Actions CI pipeline
-- Basic structured logs
+- 🔎 Manual SQL analysis
+- 🛡️ Safe `EXPLAIN ANALYZE` collection
+- 🧠 15 SQL performance detection rules
+- ⚠️ Severity and confidence for findings
+- 📝 Query history
+- 🔄 SQL query normalization
+- 💡 Suggested SQL fixes
+- 📊 Before-and-after performance comparison
+- 🐘 Docker Compose PostgreSQL demo database
+- 🧪 Automated tests
+- ⚙️ GitHub Actions CI pipeline
+- 📋 Basic structured logs
 
-### Planned Next
+### 🔮 Planned Next
 
-- Automatic monitoring
-- Active slow-query detection
-- Lock-wait detection
-- Connection saturation detection
-- Query frequency monitoring
-- Incident dashboard
-- Threshold-based alerts
-- Worker health monitoring
+- 🤖 Automatic monitoring
+- 🐌 Active slow-query detection
+- 🔒 Lock-wait detection
+- 🔌 Connection saturation detection
+- 📈 Query frequency monitoring
+- 🚨 Incident dashboard
+- 🔔 Threshold-based alerts
+- ❤️ Worker health monitoring
 
 ---
 
-## How It Works
+## ⚙️ How It Works
 
 ```text
 Developer submits SQL
@@ -56,7 +56,7 @@ Findings and recommendations returned
 Analysis saved to query history
 ```
 
-## Before-and-After Performance Comparison
+### Before-and-After Performance Comparison
 
 The profiler allows developers to measure the impact of a manually applied SQL optimization.
 
@@ -74,7 +74,15 @@ Before/after comparison returned
 
 ---
 
-## Example Problem Detected
+## 🏗️ Architecture
+
+The detailed system architecture, database environment, component responsibilities, and future monitoring architecture are documented here:
+
+👉 [View Architecture Documentation](docs/architecture.md)
+
+---
+
+## 🔎 Example Problem Detected
 
 A query such as:
 
@@ -98,55 +106,43 @@ After manually creating the index, the query can be analyzed again and compared 
 
 ---
 
-## Example Comparison
+## 📊 Example Comparison
 
 A test comparison produced:
 
 ```text
-Before: 7.49 ms
-After:  0.405 ms
-Improvement: 94.59%
+Before:       7.49 ms
+After:        0.405 ms
+Improvement:  94.59%
 ```
 
 The sequential-scan finding disappeared after the index was created.
 
-Actual execution times depend on database cache, hardware, PostgreSQL configuration, and system load.
+> **Note:** Actual execution times depend on database cache, hardware, PostgreSQL configuration, and system load.
 
 ---
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-- Java 17
-- Spring Boot
-- Spring Web MVC
-- Spring Data JPA
-- Hibernate
-- PostgreSQL
-- Docker Compose
-- Maven
-- JUnit
-- GitHub Actions
+| Technology | Purpose |
+|---|---|
+| ☕ Java 17 | Application development |
+| 🌱 Spring Boot | Backend framework |
+| 🌐 Spring Web MVC | REST API |
+| 🗄️ Spring Data JPA | Database persistence |
+| ⚙️ Hibernate | ORM |
+| 🐘 PostgreSQL | Database |
+| 🐳 Docker Compose | Reproducible database environment |
+| 📦 Maven | Build and dependency management |
+| 🧪 JUnit | Automated testing |
+| 🔄 GitHub Actions | Continuous integration |
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 sql-query-profiler/
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
-├── .mvn/
-│   └── wrapper/
-│
-├── docker/
-│   └── initdb/
-│       └── 01-demo-orders.sql
-│
-├── docs/
-│   └── architecture.md
 │
 ├── src/
 │   ├── main/
@@ -167,35 +163,43 @@ sql-query-profiler/
 │       └── java/com/sqlprofiler/
 │           └── rules/
 │
-├── .env.example
-├── .gitattributes
-├── .gitignore
+├── docker/
+│   └── initdb/
+│       └── 01-demo-orders.sql
+│
+├── docs/
+│   └── architecture.md
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+│
 ├── docker-compose.yml
+├── pom.xml
 ├── mvnw
 ├── mvnw.cmd
-├── pom.xml
 └── README.md
 ```
 
 ---
 
-## Running the PostgreSQL Demo Database
+## 🐳 Running the PostgreSQL Demo Database
 
 Make sure Docker Desktop is running.
 
-Start PostgreSQL:
+### Start PostgreSQL
 
 ```bash
 docker compose up -d
 ```
 
-Check the container:
+### Check the container
 
 ```bash
 docker compose ps
 ```
 
-Check the demo row count:
+### Check the demo row count
 
 ```bash
 docker compose exec postgres psql -U postgres -d sqlprofiler -c "SELECT COUNT(*) FROM demo_orders;"
@@ -203,26 +207,26 @@ docker compose exec postgres psql -U postgres -d sqlprofiler -c "SELECT COUNT(*)
 
 The demo database contains approximately **50,000 rows**.
 
-### Stop PostgreSQL Without Deleting Data
+### Stop PostgreSQL without deleting its data
 
 ```bash
 docker compose down
 ```
 
-### Completely Reset the Demo Database
+### Completely reset the demo database
 
 ```bash
 docker compose down -v
 docker compose up -d
 ```
 
-> **Warning:** `docker compose down -v` deletes the Docker database volume, including demo data and query history. It does not delete project files.
+> ⚠️ **Warning:** `docker compose down -v` deletes the Docker database volume, including demo data and query history.
 
 ---
 
-## Environment Configuration
+## 🔐 Environment Configuration
 
-Do not commit real passwords or API credentials.
+Do **not** commit real passwords to GitHub.
 
 Set the database password using an environment variable:
 
@@ -238,39 +242,23 @@ spring.datasource.username=postgres
 spring.datasource.password=${DB_PASSWORD}
 ```
 
-The Docker PostgreSQL database is exposed on host port `5433` and uses container port `5432`.
-
-This avoids conflicts with a PostgreSQL installation already using port `5432`.
+The Docker database is exposed on host port **5433** to avoid conflicts with a PostgreSQL installation using port **5432**.
 
 ---
 
-## Starting the Application
+## ▶️ Starting the Application
 
 ### PowerShell
 
-Set the database password:
-
 ```powershell
 $env:DB_PASSWORD="your-local-password"
-```
-
-Start Spring Boot:
-
-```powershell
 mvnw.cmd spring-boot:run
 ```
 
 ### Command Prompt
 
-Set the database password:
-
 ```cmd
 set DB_PASSWORD=your-local-password
-```
-
-Start Spring Boot:
-
-```cmd
 mvnw.cmd spring-boot:run
 ```
 
@@ -282,17 +270,15 @@ http://localhost:8080
 
 ---
 
-## API Endpoints
+## 🔌 API Endpoints
 
-### Health Check
+### ❤️ Health Check
 
 ```http
 GET /api/health
 ```
 
----
-
-### Analyze a Query
+### 🔎 Analyze a Query
 
 ```http
 POST /api/analyze
@@ -307,19 +293,13 @@ Request:
 }
 ```
 
-The profiler validates the query, runs a safe `EXPLAIN ANALYZE`, evaluates the execution plan against the detection rules, and stores the analysis in query history.
-
----
-
-### View Query History
+### 📜 View Query History
 
 ```http
 GET /api/history
 ```
 
----
-
-### Compare Before and After
+### 📊 Compare Before and After
 
 ```http
 POST /api/compare
@@ -335,13 +315,11 @@ Request:
 }
 ```
 
-> `beforeHistoryId` must refer to a previous analysis saved in query history.
-
-The comparison evaluates the earlier analysis against the new execution and reports the performance change.
+> **Note:** `beforeHistoryId` must refer to a previous analysis saved in query history.
 
 ---
 
-## Running Tests
+## 🧪 Running Tests
 
 Run the complete test suite:
 
@@ -353,39 +331,7 @@ The GitHub Actions CI pipeline also builds the project and runs the tests automa
 
 ---
 
-## Continuous Integration
-
-The project uses **GitHub Actions** for continuous integration.
-
-The workflow:
-
-```text
-Push / Pull Request
-        ↓
-GitHub Actions
-        ↓
-Set up Java 17
-        ↓
-Start PostgreSQL
-        ↓
-Wait for PostgreSQL readiness
-        ↓
-Build Spring Boot application
-        ↓
-Run tests
-        ↓
-Stop PostgreSQL
-```
-
-The CI workflow is located at:
-
-```text
-.github/workflows/ci.yml
-```
-
----
-
-## Structured Logs
+## 📋 Structured Logs
 
 The application emits structured analysis events without logging the full SQL query.
 
@@ -393,16 +339,17 @@ Example:
 
 ```text
 event=analysis_started query_length=105
+
 event=explain_started query_length=105 timeout_seconds=10
+
 event=analysis_completed status=ISSUES_FOUND findings_count=1 execution_time_ms=0.543 rows_scanned=20
+
 event=history_saved history_id=4 status=ISSUES_FOUND findings_count=1
 ```
 
-This provides useful observability while avoiding logging the complete SQL statement.
-
 ---
 
-## Safety Notes
+## 🛡️ Safety Notes
 
 - User SQL is validated before execution.
 - Analysis uses `EXPLAIN ANALYZE`.
@@ -414,11 +361,26 @@ This provides useful observability while avoiding logging the complete SQL state
 
 ---
 
-## Roadmap
+# 🗺️ Roadmap
 
-### Stage 1B — Automatic Monitoring
+## Stage 1A — Manual SQL Analysis ✅
 
-Planned monitoring capabilities include:
+- SQL query analysis
+- Safe `EXPLAIN ANALYZE`
+- Performance detection rules
+- Severity and confidence
+- Query history
+- SQL normalization
+- Suggested fixes
+- Before/after comparison
+- Docker PostgreSQL environment
+- Automated tests
+- GitHub Actions CI
+- Structured logging
+
+---
+
+## Stage 1B — Automatic Monitoring 🔮
 
 - Background polling with `@Scheduled`
 - Active slow-query detection
@@ -430,9 +392,9 @@ Planned monitoring capabilities include:
 - Basic metrics
 - Worker health checks
 
-### Stage 2 — Production Grade
+---
 
-Planned improvements include:
+## Stage 2 — Production Grade 🚀
 
 - `pg_stat_statements` trends
 - Worker retries and reliability
@@ -444,3 +406,4 @@ Planned improvements include:
 - API keys and scopes
 - Rate limiting
 - Secure shareable reports
+- Optional Chrome extension
