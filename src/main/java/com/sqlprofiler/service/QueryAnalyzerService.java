@@ -85,11 +85,19 @@ public class QueryAnalyzerService {
     public QueryReport analyze(String sqlQuery) {
         QueryReport report = new QueryReport();
         report.setOriginalQuery(sqlQuery);
+        
+        log.info(
+        	    "event=analysis_started query_length={}",
+        	    sqlQuery.length()
+        	);
 
         // Step 1 — Validate before touching the database
         try {
             validator.validate(sqlQuery);
         } catch (IllegalArgumentException e) {
+        	log.warn(
+        		    "event=validation_failed status=INVALID reason=input_rejected"
+        		);
             report.setOverallStatus("INVALID");
             report.addFinding(new Finding(
                 "VALIDATION_ERROR",
@@ -109,7 +117,10 @@ public class QueryAnalyzerService {
             // Safety: abort if query runs longer than 10 seconds
             stmt.execute("SET statement_timeout = '10s'");
 
-            log.info("Running EXPLAIN ANALYZE, query length: {}", sqlQuery.length());
+            log.info(
+            	    "event=explain_started query_length={} timeout_seconds=10",
+            	    sqlQuery.length()
+            	);
 
             ResultSet rs = stmt.executeQuery("EXPLAIN ANALYZE " + sqlQuery);
 
@@ -131,17 +142,27 @@ public class QueryAnalyzerService {
             }
 
             // Step 5 — If no rules fired, query is clean
-            if (!report.hasFindings()) {
-                log.info("Analysis complete — no issues found");
-            } else {
-                log.info("Analysis complete — {} finding(s)", report.getFindings().size());
-            }
+//            if (!report.hasFindings()) {
+//                log.info("Analysis complete — no issues found");
+//            } else {
+//                log.info("Analysis complete — {} finding(s)", report.getFindings().size());
+//            }
+            log.info(
+            	    "event=analysis_completed status={} findings_count={} execution_time_ms={} rows_scanned={}",
+            	    report.getOverallStatus(),
+            	    report.getFindings().size(),
+            	    report.getExecutionTime(),
+            	    report.getRowsScanned()
+            	);
             
             saveToHistory(report);
 
         } catch (SQLException e) {
             // Never log the full exception — it can contain credentials
-            log.error("SQL error during analysis: {}", e.getSQLState());
+        	log.error(
+        		    "event=analysis_failed status=ERROR sql_state={}",
+        		    e.getSQLState()
+        		);
             report.setOverallStatus("ERROR");
             report.addFinding(new Finding(
                 "ANALYSIS_ERROR",
@@ -309,11 +330,13 @@ public class QueryAnalyzerService {
             history.setFindingsJson("[]");
         }
 
-        historyRepository.save(history);
+        QueryHistory savedHistory = historyRepository.save(history);
 
         log.info(
-            "Query analysis saved to history with status: {}",
-            report.getOverallStatus()
+            "event=history_saved history_id={} status={} findings_count={}",
+            savedHistory.getId(),
+            report.getOverallStatus(),
+            report.getFindings().size()
         );
     }
 }
