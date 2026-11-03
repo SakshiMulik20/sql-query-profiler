@@ -5,8 +5,6 @@ The SQL Query Profiler is a tool designed to help developers identify the reason
 
 ## 2. Before You Begin
 
-## 3. Starting the Application
-
 Before starting, make sure you have:
 
 - Java and Maven installed.
